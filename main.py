@@ -1,33 +1,55 @@
 import json
-from scrapper.types import STOCKS_BR
+from scrapper.types import STOCKS_BR, FII
 from scrapper.scrapper_constructor import ScrapperConstructor
 from google_sheet_invest import GoogleSheetInvest
 
 
-def get_invest_data():
-    scraper_stock_br = ScrapperConstructor().build(STOCKS_BR)
+def __call_scrapper(type, tickers, tickers_info):
+    scraper = ScrapperConstructor().build(type)
 
-    tickets = [
-        {"ticket": "EGIE3"},
-        {"ticket": "GGBR4"},
-        {"ticket": "ITUB4"},
-        {"ticket": "KLBN11"},
-        {"ticket": "VALE3"},
-        {"ticket": "VIVT3"},
+    for ticker in tickers:
+        print(f"Getting data from {ticker}")
+        data = scraper.get_data(ticker)
+        print(data)
+        tickers_info.append(data)
+
+    scraper.driver_quit()
+
+    return tickers_info
+
+
+def get_invest_data():
+    tickers_info = []
+
+    tickers = [
+        "EGIE3",
+        "GGBR4",
+        "ITUB4",
+        "KLBN11",
+        "VALE3",
+        "VIVT3",
     ]
 
-    tickets_info = []
+    tickers_info = __call_scrapper(STOCKS_BR, tickers, tickers_info)
 
-    for ticket in tickets:
-        print(f"Getting data from {ticket['ticket']}")
-        data = scraper_stock_br.get_data(ticket["ticket"])
-        print(data)
-        tickets_info.append(data)
+    tickers = [
+        "CPTS11",
+        "KNCR11",
+        "BRCO11",
+        "PVBI11",
+        "KNRI11",
+        "BCFF11",
+        "VISC11",
+        "XPML11",
+        "BTLG11",
+        "HTMX11",
+        "HFOF11",
+    ]
 
-    scraper_stock_br.driver_quit()
+    tickers_info = __call_scrapper(FII, tickers, tickers_info)
 
     with open("extractions/data.json", "w") as file:
-        json.dump(tickets_info, file, indent=4)
+        json.dump(tickers_info, file, indent=4)
 
 
 # You need to create a service account on google cloud platform, download the json file and put it on the root folder as service_account_credential.json
@@ -35,6 +57,7 @@ def get_invest_data():
 def save_invest_data_on_google_sheet():
     gs_invest = GoogleSheetInvest()
     gs_invest.save_data(STOCKS_BR)
+    gs_invest.save_data(FII)
 
 
 def main():
