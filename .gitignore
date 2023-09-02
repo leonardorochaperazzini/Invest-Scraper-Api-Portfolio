@@ -1,0 +1,5 @@
+service_account_credential.json
+/invest.egg-info/**
+/build/**
+/__pycache__**
+/extractions/**
