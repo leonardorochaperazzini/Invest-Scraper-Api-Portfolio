@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/app
+    command: ["python", "-u", "./main.py"]
+    environment:
+      - SELENIUM_HUB_URL=http://host.docker.internal:4444
+    networks:
+      - my_shared_network
+  
+networks:
+  my_shared_network:
+    name: my_shared_network

@@ -1,69 +1,61 @@
-import json
-from scrapper.types import STOCKS_BR, FII
-from scrapper.scrapper_constructor import ScrapperConstructor
-from google_sheet_invest import GoogleSheetInvest
+import concurrent.futures
+from logger import Logger
+from Scrapper.types import STOCKS_BR, FII
+from Scrapper.scrapper_constructor import ScrapperConstructor
 
-
-def __call_scrapper(type, tickers, tickers_info):
-    scraper = ScrapperConstructor().build(type)
+def get_tickers_info(invest_type, tickers):
+    return_tickers = []
+    logger = Logger(print_log=True)
+    scrapper = ScrapperConstructor().build(invest_type)
 
     for ticker in tickers:
-        print(f"Getting data from {ticker}")
-        data = scraper.get_data(ticker)
-        print(data)
-        tickers_info.append(data)
+        logger.print(f"Getting data from {ticker}")
+        data = scrapper.get_data(ticker)
+        logger.print(data)
+        return_tickers.append(data)
 
-    scraper.driver_quit()
+    scrapper.driver_quit()
 
-    return tickers_info
+    return return_tickers
 
 
-def get_invest_data():
-    tickers_info = []
+def get_tickers_info_concurrently(stock_type, tickers):
+    return get_tickers_info(stock_type, tickers)
 
-    tickers = [
+def get_invest_data(max_workers):
+    tickers_stocks = [
         "EGIE3",
         "GGBR4",
-        "ITUB4",
-        "KLBN11",
-        "VALE3",
-        "VIVT3",
+        #"ITUB4",
+        #"KLBN11",
+        #"VALE3",
+        #"VIVT3",
     ]
 
-    tickers_info = __call_scrapper(STOCKS_BR, tickers, tickers_info)
-
-    tickers = [
+    tickers_fii = [
         "CPTS11",
-        "KNCR11",
-        "BRCO11",
-        "PVBI11",
-        "KNRI11",
-        "BCFF11",
+        #"KNCR11",
+        #"BRCO11",
+        #"PVBI11",
+        #"KNRI11",
+        #"BCFF11",
         "VISC11",
-        "XPML11",
-        "BTLG11",
-        "HTMX11",
-        "HFOF11",
+        #"XPML11",
+        #"BTLG11",
+        #"HTMX11",
+        #"HFOF11",
     ]
 
-    tickers_info = __call_scrapper(FII, tickers, tickers_info)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_stocks = executor.submit(get_tickers_info_concurrently, STOCKS_BR, tickers_stocks)
+        future_fii = executor.submit(get_tickers_info_concurrently, FII, tickers_fii)
 
-    with open("extractions/data.json", "w") as file:
-        json.dump(tickers_info, file, indent=4)
-
-
-# You need to create a service account on google cloud platform, download the json file and put it on the root folder as service_account_credential.json
-# You need share the google sheet with the email on the json file
-def save_invest_data_on_google_sheet():
-    gs_invest = GoogleSheetInvest()
-    gs_invest.save_data(STOCKS_BR)
-    gs_invest.save_data(FII)
-
+        tickers_info_stocks = future_stocks.result()
+        tickers_info_fii = future_fii.result()
 
 def main():
-    get_invest_data()
-    save_invest_data_on_google_sheet()
-
+    max_workers = 1
+    get_invest_data(max_workers)
 
 if __name__ == "__main__":
     main()

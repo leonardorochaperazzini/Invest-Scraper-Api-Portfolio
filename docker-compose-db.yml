@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: invest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+networks:
+  my_shared_network:
+    name: my_shared_network
+    external: true
+
+volumes:
+  pgdata:
