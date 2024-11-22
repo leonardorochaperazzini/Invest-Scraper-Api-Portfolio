@@ -1,5 +1,7 @@
+alembic
 bs4
-requests
-selenium
-pandas
 faker
+requests
+sqlalchemy
+psycopg2-binary
+selenium

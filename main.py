@@ -1,7 +1,7 @@
 import concurrent.futures
 from logger import Logger
-from Scrapper.types import STOCKS_BR, FII
-from Scrapper.scrapper_constructor import ScrapperConstructor
+from app.Scrapper.types import STOCKS_BR, FII
+from app.Scrapper.scrapper_constructor import ScrapperConstructor
 
 def get_tickers_info(invest_type, tickers):
     return_tickers = []

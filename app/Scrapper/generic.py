@@ -2,7 +2,7 @@ import os
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from FakeUserAgent import FakeUserAgent
+from app.FakeUserAgent import FakeUserAgent
 
 class GenericScrapper:
     def __init__(self):

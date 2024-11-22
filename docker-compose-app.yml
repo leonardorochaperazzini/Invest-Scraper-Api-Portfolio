@@ -5,12 +5,17 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/usr/app
-    command: ["python", "-u", "./main.py"]
+    command: ["./entrypoint.sh"]
     environment:
       - SELENIUM_HUB_URL=http://host.docker.internal:4444
+      - DATABASE_HOST=db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=invest
     networks:
       - my_shared_network
   
 networks:
   my_shared_network:
     name: my_shared_network
+    external: true

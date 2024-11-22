@@ -30,3 +30,4 @@ services:
 networks:
   my_shared_network:
     name: my_shared_network
+    external: true

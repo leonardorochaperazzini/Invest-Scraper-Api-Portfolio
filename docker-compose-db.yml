@@ -9,6 +9,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - my_shared_network
 
 networks:
   my_shared_network:
