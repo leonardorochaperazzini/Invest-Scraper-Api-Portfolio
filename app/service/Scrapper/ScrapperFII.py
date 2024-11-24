@@ -1,5 +1,6 @@
-from .generic import GenericScrapper
+from retry import retry
 
+from .Generic import GenericScrapper
 
 class ScrapperFII(GenericScrapper):
     def __init__(self, type):
@@ -7,10 +8,12 @@ class ScrapperFII(GenericScrapper):
         self.url = self.url + "fundos-imobiliarios/"
         self.type = type
 
+    @retry(tries=3, delay=1, jitter=2)
     def get_data_from_ticker(self, ticker):
         url = self.url + ticker
 
-        soup = self.call_url(url)
+        self.call_url(url)
+        soup = self.get_html()
 
         current_value = (
             soup.find("div", {"title": "Valor atual do ativo"})

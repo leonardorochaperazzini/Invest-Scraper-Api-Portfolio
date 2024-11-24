@@ -2,6 +2,7 @@ alembic
 bs4
 faker
 requests
+retry
 sqlalchemy
 psycopg2-binary
 selenium

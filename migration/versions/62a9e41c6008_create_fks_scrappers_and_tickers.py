@@ -33,8 +33,8 @@ def upgrade() -> None:
         ON UPDATE NO ACTION ON DELETE CASCADE;
                
         ALTER TABLE invest."scrapper_runs_tickers"
-        ADD CONSTRAINT scrapper_runs_tickers_ticket_id_fkey
-        FOREIGN KEY("ticket_id") 
+        ADD CONSTRAINT scrapper_runs_tickers_ticker_id_fkey
+        FOREIGN KEY("ticker_id") 
         REFERENCES invest."tickers"("id")
         ON UPDATE NO ACTION ON DELETE NO ACTION;
     ''')
@@ -49,5 +49,5 @@ def downgrade() -> None:
         DROP CONSTRAINT tickers_ticker_type_id_fkey;
                
         ALTER TABLE invest."scrapper_runs_tickers"
-        DROP CONSTRAINT scrapper_runs_tickers_ticket_id_fkey;
+        DROP CONSTRAINT scrapper_runs_tickers_ticker_id_fkey;
     ''')

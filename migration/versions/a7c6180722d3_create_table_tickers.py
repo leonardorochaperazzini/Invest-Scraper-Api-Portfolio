@@ -28,6 +28,12 @@ def upgrade() -> None:
         );
     ''')
 
+    op.execute('''
+        INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('EGIE3', 1);
+        INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('CPTS11', 2);
+        INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('VISC11', 2);
+    ''')
+
 
 def downgrade() -> None:
     op.execute('''
