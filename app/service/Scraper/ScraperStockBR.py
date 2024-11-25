@@ -1,8 +1,10 @@
 from retry import retry
 
-from .Generic import GenericScrapper
+from .Generic import GenericScraper
 
-class ScrapperStockBr(GenericScrapper):
+from .model.TickerInfo import TickerInfo
+
+class ScraperStockBr(GenericScraper):
     def __init__(self, type):
         super().__init__()
         self.url = self.url + "acoes/"
@@ -74,15 +76,15 @@ class ScrapperStockBr(GenericScrapper):
             .text
         )
 
-        data = {
-            "ticker": ticker,
-            "type": self.type,
-            "price": self.convert_to_float(current_value),
-            "dy": self.convert_to_float(dy_value),
-            "pvp": self.convert_to_float(pvp_value),
-            "roe": self.convert_to_float(roe_value),
-            "dl_ebitda": self.convert_to_float(dl_ebitda_value),
-            "sector": sector,
-            "sub_sector": sub_sector,
-        }
-        return data
+        ticker_info = TickerInfo()
+
+        ticker_info.set_ticker(ticker)
+        ticker_info.set_price(current_value)
+        ticker_info.set_dy(dy_value)
+        ticker_info.set_pvp(pvp_value)
+        ticker_info.set_roe(roe_value)
+        ticker_info.set_dl_ebitda(dl_ebitda_value)
+        ticker_info.set_sector(sector)
+        ticker_info.set_sub_sector(sub_sector)
+
+        return ticker_info

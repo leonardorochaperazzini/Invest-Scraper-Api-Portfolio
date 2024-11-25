@@ -1,4 +1,4 @@
-"""create fks scrappers and tickers
+"""create fks scrapers and tickers
 
 Revision ID: 62a9e41c6008
 Revises: a7c6180722d3
@@ -20,10 +20,10 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.execute('''
-        ALTER TABLE invest."scrapper_runs_tickers" 
-        ADD CONSTRAINT scrapper_runs_tickers_scrapper_run_id_fkey
-        FOREIGN KEY("scrapper_run_id") 
-        REFERENCES invest."scrapper_runs"("id")
+        ALTER TABLE invest."scraper_runs_tickers" 
+        ADD CONSTRAINT scraper_runs_tickers_scraper_run_id_fkey
+        FOREIGN KEY("scraper_run_id") 
+        REFERENCES invest."scraper_runs"("id")
         ON UPDATE NO ACTION ON DELETE CASCADE;
                
         ALTER TABLE invest."tickers"
@@ -32,8 +32,8 @@ def upgrade() -> None:
         REFERENCES invest."tickers_types"("id")
         ON UPDATE NO ACTION ON DELETE CASCADE;
                
-        ALTER TABLE invest."scrapper_runs_tickers"
-        ADD CONSTRAINT scrapper_runs_tickers_ticker_id_fkey
+        ALTER TABLE invest."scraper_runs_tickers"
+        ADD CONSTRAINT scraper_runs_tickers_ticker_id_fkey
         FOREIGN KEY("ticker_id") 
         REFERENCES invest."tickers"("id")
         ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -42,12 +42,12 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.execute('''
-        ALTER TABLE invest."scrapper_runs_tickers" 
-        DROP CONSTRAINT scrapper_runs_tickers_scrapper_run_id_fkey;
+        ALTER TABLE invest."scraper_runs_tickers" 
+        DROP CONSTRAINT scraper_runs_tickers_scraper_run_id_fkey;
                
         ALTER TABLE invest."tickers"
         DROP CONSTRAINT tickers_ticker_type_id_fkey;
                
-        ALTER TABLE invest."scrapper_runs_tickers"
-        DROP CONSTRAINT scrapper_runs_tickers_ticker_id_fkey;
+        ALTER TABLE invest."scraper_runs_tickers"
+        DROP CONSTRAINT scraper_runs_tickers_ticker_id_fkey;
     ''')

@@ -1,8 +1,10 @@
 from retry import retry
 
-from .Generic import GenericScrapper
+from .Generic import GenericScraper
 
-class ScrapperFII(GenericScrapper):
+from .model.TickerInfo import TickerInfo
+
+class ScraperFII(GenericScraper):
     def __init__(self, type):
         super().__init__()
         self.url = self.url + "fundos-imobiliarios/"
@@ -55,14 +57,14 @@ class ScrapperFII(GenericScrapper):
             .text
         )
 
-        data = {
-            "ticker": ticker,
-            "type": self.type,
-            "price": self.convert_to_float(current_value),
-            "dy": self.convert_to_float(dy_value),
-            "pvp": self.convert_to_float(pvp_value),
-            "segment": segment,
-            "type_anbima": type_anbima,
-            "segment_anbima": segment_anbima,
-        }
-        return data
+        ticker_info = TickerInfo()
+
+        ticker_info.set_ticker(ticker)
+        ticker_info.set_price(current_value)
+        ticker_info.set_dy(dy_value)
+        ticker_info.set_pvp(pvp_value)
+        ticker_info.set_segment(segment)
+        ticker_info.set_type_anbima(type_anbima)
+        ticker_info.set_segment_anbima(segment_anbima)
+
+        return ticker_info

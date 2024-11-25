@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from app.service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 
-class GenericScrapper:
+class GenericScraper:
     def __init__(self):
         self.url = "https://statusinvest.com.br/"
         options = webdriver.FirefoxOptions()
@@ -45,19 +45,8 @@ class GenericScrapper:
     def get_html(self):
         return BeautifulSoup(self.driver.page_source, "html.parser")
 
-    def convert_to_float(self, value):
-        if value.strip() == "-":
-            return "-"
-        return float(value.replace(".", "").replace(",", ".").replace("%", ""))
-
     def get_data(self, ticker):
-        try:
-            return self.get_data_from_ticker(ticker)
-        except Exception as e:
-            return {
-                "ticker": ticker,
-                "exception": str(e),
-            }
+        return self.get_data_from_ticker(ticker)
 
     def __del__(self):
         self.driver.quit()

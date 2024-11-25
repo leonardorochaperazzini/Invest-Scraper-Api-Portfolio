@@ -1,7 +1,7 @@
 
 # Invest Project
 
-This project is an application to manage and analyze investments. It uses Docker to facilitate the setup and execution of the required services, including the application server, a Selenium server for scrapers, and a PostgreSQL database.
+This project is an application to manage and analyze investments. It uses Docker to facilitate the setup and execution of the required services, including the application server, a Selenium server for scraping, and a PostgreSQL database.
 
 ## Getting Started
 

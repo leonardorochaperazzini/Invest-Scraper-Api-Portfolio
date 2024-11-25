@@ -5,7 +5,7 @@
   "tables": [
     {
       "id": 0,
-      "name": "scrapper_runs",
+      "name": "scraper_runs",
       "x": -442,
       "y": -218,
       "fields": [
@@ -59,7 +59,7 @@
     },
     {
       "id": 1,
-      "name": "scrapper_runs_tickers",
+      "name": "scraper_runs_tickers",
       "x": 7.999999999999886,
       "y": -229.00000000000003,
       "fields": [
@@ -76,7 +76,7 @@
           "id": 0
         },
         {
-          "name": "scrapper_run_id",
+          "name": "scraper_run_id",
           "type": "BIGINT",
           "default": "",
           "check": "",
@@ -263,7 +263,7 @@
       "cardinality": "many_to_one",
       "updateConstraint": "No action",
       "deleteConstraint": "Cascade",
-      "name": "scrapper_runs_id_fk",
+      "name": "scraper_runs_id_fk",
       "id": 0
     },
     {

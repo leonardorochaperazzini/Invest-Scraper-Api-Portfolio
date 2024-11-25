@@ -3,8 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class ScrapperRun(Base):
-  __tablename__ = 'scrapper_runs'
+class ScraperRun(Base):
+  __tablename__ = 'scraper_runs'
   __table_args__ = {'schema': 'invest'}
 
   id = Column(BigInteger, primary_key=True)
