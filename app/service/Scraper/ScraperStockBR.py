@@ -5,10 +5,9 @@ from .Generic import GenericScraper
 from .model.TickerInfo import TickerInfo
 
 class ScraperStockBr(GenericScraper):
-    def __init__(self, type):
-        super().__init__()
-        self.url = self.url + "acoes/"
-        self.type = type
+    def __init__(self, type, logger):
+        super().__init__(type, logger)
+        self.url = self.url + "acoes/" 
 
     @retry(tries=3, delay=1, jitter=2)
     def get_data_from_ticker(self, ticker):

@@ -1,5 +1,4 @@
 class TickerInfo():
-	
     def __init__(self):
         self.ticker = None
         self.price = None
@@ -12,6 +11,36 @@ class TickerInfo():
         self.dl_ebitda = None
         self.sector = None
         self.sub_sector = None
+
+    def __str__(self):
+        return f"""
+            Ticker: {self.ticker}
+            Price: {self.price}
+            DY: {self.dy}
+            PVP: {self.pvp}
+            Segment: {self.segment}
+            Type ANBIMA: {self.type_anbima}
+            Segment ANBIMA: {self.segment_anbima}
+            ROE: {self.roe}
+            DL EBITDA: {self.dl_ebitda}
+            Sector: {self.sector}
+            Sub Sector: {self.sub_sector}
+        """
+    
+    def __json__(self):
+        return {
+            "ticker": self.ticker,
+            "price": self.price,
+            "dy": self.dy,
+            "pvp": self.pvp,
+            "segment": self.segment,
+            "type_anbima": self.type_anbima,
+            "segment_anbima": self.segment_anbima,
+            "roe": self.roe,
+            "dl_ebitda": self.dl_ebitda,
+            "sector": self.sector,
+            "sub_sector": self.sub_sector
+        }
  
     def convert_to_float(self, value):
         if value.strip() == "-":

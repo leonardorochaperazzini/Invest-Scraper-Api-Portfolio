@@ -1,0 +1,5 @@
+Create validator to ticker, pvp, price
+Create contracts to repositories and services and service models
+Deploy database https://render.com
+Deploy code
+Deploy CI/CD

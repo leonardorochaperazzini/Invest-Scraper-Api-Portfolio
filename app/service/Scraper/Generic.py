@@ -5,10 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from app.service.Scraper.model.TickerInfo import TickerInfo
 from app.service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 
 class GenericScraper:
-    def __init__(self):
+    def __init__(self, type, logger):
+        self.logger = logger
+        self.type = type
+        
         self.url = "https://statusinvest.com.br/"
         options = webdriver.FirefoxOptions()
         options.add_argument(f"user-agent={FakeUserAgentService().get_random_user_agent()}")
@@ -35,7 +39,7 @@ class GenericScraper:
                     continue
             self.driver.switch_to.default_content()
         except TimeoutException:
-            print("Anúncio não encontrado ou tempo limite atingido.")
+            self.logger.print("Anúncio não encontrado ou tempo limite atingido.")
 
     def call_url(self, url):
         self.driver.get(url)
@@ -45,7 +49,7 @@ class GenericScraper:
     def get_html(self):
         return BeautifulSoup(self.driver.page_source, "html.parser")
 
-    def get_data(self, ticker):
+    def get_data(self, ticker) -> TickerInfo:
         return self.get_data_from_ticker(ticker)
 
     def __del__(self):

@@ -1,0 +1,12 @@
+from sqlalchemy import Column, BigInteger, JSON
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class ScraperTickerData(Base):
+  __tablename__ = 'scraper_tickers_data'
+  __table_args__ = {'schema': 'invest'}
+
+  id = Column(BigInteger, primary_key=True)
+  scraper_run_ticker_id = Column(BigInteger)
+  data = Column(JSON)
