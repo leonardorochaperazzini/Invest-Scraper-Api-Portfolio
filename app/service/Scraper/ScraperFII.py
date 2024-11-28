@@ -5,16 +5,15 @@ from .Generic import GenericScraper
 from .model.TickerInfo import TickerInfo
 
 class ScraperFII(GenericScraper):
-    def __init__(self, type, logger):
-        super().__init__(type, logger)
+    def __init__(self):
+        super().__init__()
         self.url = self.url + "fundos-imobiliarios/"
 
     @retry(tries=3, delay=1, jitter=2)
-    def get_data_from_ticker(self, ticker):
+    def get_data_from_ticker(self, ticker : str) -> TickerInfo:
         url = self.url + ticker
 
-        self.call_url(url)
-        soup = self.get_html()
+        soup = self.call_url(url)
 
         current_value = (
             soup.find("div", {"title": "Valor atual do ativo"})

@@ -5,4 +5,5 @@ requests
 retry
 sqlalchemy
 psycopg2-binary
+pydantic
 selenium

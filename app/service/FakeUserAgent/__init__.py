@@ -6,7 +6,7 @@ class FakeUserAgent:
     def __init__(self):
         self.fake = Faker()
     
-    def get_random_user_agent(self, type = FIREFOX):
+    def get_random_user_agent(self, type: str = FIREFOX) -> str:
         while True:
             user_agent = self.fake.user_agent()
             if type in user_agent:

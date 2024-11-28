@@ -1,4 +1,7 @@
 import os
+
+from app.service.Logger import LoggerSingleton as logger_singleton
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,10 +12,7 @@ from app.service.Scraper.model.TickerInfo import TickerInfo
 from app.service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 
 class GenericScraper:
-    def __init__(self, type, logger):
-        self.logger = logger
-        self.type = type
-        
+    def __init__(self) -> None:
         self.url = "https://statusinvest.com.br/"
         options = webdriver.FirefoxOptions()
         options.add_argument(f"user-agent={FakeUserAgentService().get_random_user_agent()}")
@@ -21,7 +21,6 @@ class GenericScraper:
             command_executor=os.getenv('SELENIUM_HUB_URL', 'http://selenium-hub:4444'),
             options=options
         )
-
 
     def __close_ads(self):
         try:
@@ -39,17 +38,15 @@ class GenericScraper:
                     continue
             self.driver.switch_to.default_content()
         except TimeoutException:
-            self.logger.print("Anúncio não encontrado ou tempo limite atingido.")
+            logger_singleton.print("Anúncio não encontrado ou tempo limite atingido.")
 
-    def call_url(self, url):
+    def call_url(self, url: str) -> None:
         self.driver.get(url)
         self.driver.implicitly_wait(2)
         self.__close_ads()
-
-    def get_html(self):
         return BeautifulSoup(self.driver.page_source, "html.parser")
 
-    def get_data(self, ticker) -> TickerInfo:
+    def get_data(self, ticker: str) -> TickerInfo:
         return self.get_data_from_ticker(ticker)
 
     def __del__(self):

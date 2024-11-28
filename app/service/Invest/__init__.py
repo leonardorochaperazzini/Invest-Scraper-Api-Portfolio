@@ -1,6 +1,6 @@
 import json
 
-from logger import Logger
+from app.service.Logger import LoggerSingleton as logger_singleton
 
 from app.model.Ticker import Ticker
 
@@ -8,14 +8,15 @@ from app.service.Scraper.model.TickerInfo import TickerInfo
 
 from app.service.Scraper.ScraperConstructor import ScraperConstructor as  ScraperConstructorService
 
+from app.contracts.repository.Base import Base as BaseRepositoryInterface
+
 class Invest:
-    def __init__(self, scraper_run_ticker_repository, scraper_ticker_data_repository, print_log : bool = True):
+    def __init__(self, scraper_run_ticker_repository: BaseRepositoryInterface, scraper_ticker_data_repository: BaseRepositoryInterface):
         self.scraper_run_ticker_repository = scraper_run_ticker_repository
         self.scraper_ticker_data_repository = scraper_ticker_data_repository
-        self.logger = Logger(print_log=print_log)
     
-    def scraper_ticker_info(self, scraper_run_id : int, ticker : Ticker):
-        scraper_service = ScraperConstructorService().build(ticker.ticker_type_id, self.logger)
+    def scraper_ticker_info(self, scraper_run_id : int, ticker : Ticker) -> tuple[int, TickerInfo]:
+        scraper_service = ScraperConstructorService().build(ticker.ticker_type_id)
 
         scraper_run_ticker = self.scraper_run_ticker_repository.create(
             {
@@ -26,7 +27,7 @@ class Invest:
             }
         )
 
-        self.logger.print(f"Getting data from {ticker.name}")
+        logger_singleton.print(f"Getting data from {ticker.name}")
         try:
             ticker_info = scraper_service.get_data(ticker.name)
 
@@ -36,6 +37,7 @@ class Invest:
             ticker_info = None
             exec_failed = True
             cause_exec_failed = str(e)
+            logger_singleton.print(f"Failed to get data from {ticker.name} | cause: {cause_exec_failed}")
 
         self.scraper_run_ticker_repository.update(
             scraper_run_ticker.id,
@@ -48,7 +50,7 @@ class Invest:
 
         return scraper_run_ticker.id, ticker_info 
     
-    def save_ticker_info(self, scraper_run_ticker_id: int, ticker_info: TickerInfo = None):
+    def save_ticker_info(self, scraper_run_ticker_id: int, ticker_info: TickerInfo = None) -> None:
         if ticker_info is not None:    
             self.scraper_ticker_data_repository.create(
                 {
@@ -56,7 +58,7 @@ class Invest:
                     'data': ticker_info.__json__()
                 }
             )
-            self.logger.print(f"Data from {ticker_info.ticker} saved successfully")
-            self.logger.print(json.dumps(ticker_info.__json__(), indent=4))
+            logger_singleton.print(f"Data from {ticker_info.ticker} saved successfully")
+            logger_singleton.print(json.dumps(ticker_info.__json__(), indent=4))
         else:
-            self.logger.print(f"Failed to get data from scrapper run ticker id {scraper_run_ticker_id}")
+            logger_singleton.print(f"Failed to get data from scrapper run ticker id {scraper_run_ticker_id}")

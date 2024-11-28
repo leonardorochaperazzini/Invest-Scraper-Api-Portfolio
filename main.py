@@ -1,7 +1,6 @@
 import concurrent.futures
 
 from app.model.Ticker import Ticker as TickerModel
-from app.model.TickerType import STOCKS_BR_ID, FII_ID
 from app.model.ScraperRun import ScraperRun as ScraperRunModel
 from app.model.ScraperRunTicker import ScraperRunTicker as ScraperRunTickerModel
 from app.model.ScraperTickerData import ScraperTickerData as ScraperTickerDataModel
@@ -14,13 +13,12 @@ from app.repository.ScraperTickerData import ScraperTickerData as ScraperTickerD
 from app.service.Invest import Invest as InvestService
 
 MAX_WORKERS = 5
-PRINT_LOG = True
 
-def run_invest_scraping_and_save_data(max_workers, print_log):
+def run_invest_scraping_and_save_data(max_workers: int):
     ticker_repository = TickerRepository(TickerModel)
     scraper_run_repository = ScraperRunRepository(ScraperRunModel)
 
-    tickers = ticker_repository.all()
+    tickers = ticker_repository.all(limit=1)
 
     scraper_run = scraper_run_repository.create(
         {
@@ -33,7 +31,7 @@ def run_invest_scraping_and_save_data(max_workers, print_log):
         for ticker in tickers:
             scraper_run_ticker_repository = ScraperRunTickerRepository(ScraperRunTickerModel)
             scraper_ticker_data_repository = ScraperTickerDataRepository(ScraperTickerDataModel)
-            invest_service = InvestService(scraper_run_ticker_repository, scraper_ticker_data_repository, print_log)
+            invest_service = InvestService(scraper_run_ticker_repository, scraper_ticker_data_repository)
             future_ticker = executor.submit(invest_service.scraper_ticker_info, scraper_run.id, ticker)
         
             def callback(future):
@@ -52,7 +50,6 @@ def run_invest_scraping_and_save_data(max_workers, print_log):
 def main():
     run_invest_scraping_and_save_data(
         max_workers = MAX_WORKERS,
-        print_log = PRINT_LOG
     )
 
 if __name__ == "__main__":
