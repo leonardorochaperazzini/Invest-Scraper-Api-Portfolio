@@ -1,4 +1,4 @@
-FROM arm64v8/python:3.10-slim
+FROM python:3.10-slim
 
 WORKDIR /usr/app
 
