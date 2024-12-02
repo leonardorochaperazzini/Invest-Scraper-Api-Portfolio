@@ -5,13 +5,18 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/usr/app
-    command: ["./entrypoint.sh"]
+    command: ["./entrypoint_api.sh"]
+    ports:
+      - "8000:8000"
     environment:
-      - SELENIUM_HUB_URL=http://host.docker.internal:4444
       - DATABASE_HOST=db
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
       - DATABASE_NAME=invest
+      - PRINT_LOG=False
+      - PYTHONUNBUFFERED=1
+      - SELENIUM_HUB_URL=http://host.docker.internal:4444
+      
     networks:
       - my_shared_network
   

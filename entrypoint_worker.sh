@@ -5,4 +5,4 @@
 
 alembic upgrade head
 
-python -u ./main.py
+python -u ./app/worker.py

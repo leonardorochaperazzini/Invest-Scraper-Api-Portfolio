@@ -1,9 +1,11 @@
 alembic
 bs4
 faker
+fastapi
 requests
 retry
 sqlalchemy
 psycopg2-binary
 pydantic
 selenium
+uvicorn

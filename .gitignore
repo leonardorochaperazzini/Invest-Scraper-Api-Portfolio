@@ -3,3 +3,4 @@ service_account_credential.json
 /build/**
 **/__pycache__**
 /extractions/**
+.env

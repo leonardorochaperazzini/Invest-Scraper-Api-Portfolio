@@ -9,9 +9,14 @@ To start the project, follow the commands below:
 
 ### Docker Commands
 
-- **Build the application:**
+- **Build the application as worker standalone:**
   ```bash
-  docker-compose -f docker-compose-app.yml -p app1 build
+  docker-compose -f docker-compose-app-worker.yml -p app1 build
+  ```
+
+  - **Build the application as api:**
+  ```bash
+  docker-compose -f docker-compose-api.yml -p app1 build
   ```
 
 - **Run the Selenium service:**
@@ -24,9 +29,14 @@ To start the project, follow the commands below:
   docker-compose -f docker-compose-db.yml -p db-1 up
   ```
 
-- **Run the application:**
+- **Run the application as worker standalone:**
   ```bash
-  docker-compose -f docker-compose-app.yml -p app1 up
+  docker-compose -f docker-compose-app-worker.yml -p app1 up
+  ```
+
+- **Run the application as api:**
+  ```bash
+  docker-compose -f docker-compose-api.yml -p app1 up
   ```
 
 ## Data Model

@@ -1,6 +1,6 @@
 import os
 
-from app.service.Logger import LoggerSingleton as logger_singleton
+from service.Logger import LoggerSingleton as logger_singleton
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -8,8 +8,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from app.service.Scraper.model.TickerInfo import TickerInfo
-from app.service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
+from service.Scraper.model.TickerInfo import TickerInfo
+from service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 
 class GenericScraper:
     def __init__(self) -> None:
@@ -28,7 +28,7 @@ class GenericScraper:
             for iframe in iframes:
                 self.driver.switch_to.frame(iframe)
                 try:
-                    element = WebDriverWait(self.driver, 1).until(
+                    element = WebDriverWait(self.driver, 3).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, "div.a_d__v_e__r_t__i_s__i_n__g button"))
                     )
                     element.click()

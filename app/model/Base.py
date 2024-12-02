@@ -9,3 +9,7 @@ class Base(BaseModel):
   __table_args__ = {'schema': 'invest'}
 
   id = Column(BigInteger, primary_key=True)
+
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+    

@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/app
+    command: ["./entrypoint_worker.sh"]
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=invest
+      - PRINT_LOG=False
+      - PYTHONUNBUFFERED=1
+      - SELENIUM_HUB_URL=http://host.docker.internal:4444
+      
+    networks:
+      - my_shared_network
+  
+networks:
+  my_shared_network:
+    name: my_shared_network
+    external: true

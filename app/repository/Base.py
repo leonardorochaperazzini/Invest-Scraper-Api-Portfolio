@@ -1,10 +1,12 @@
 import os
+
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
-from app.contracts.repository.Base import Base as BaseInterface
+from contract.repository.Base import Base as BaseInterface
 
 class Base(BaseInterface):
    def __init__(self, model: DeclarativeMeta) -> None:
@@ -34,7 +36,7 @@ class Base(BaseInterface):
       return record
       
    def get_current_date(self) -> str:
-      return 'NOW()'
+      return datetime.now()
 
    def __del__(self):
       if self.session:
