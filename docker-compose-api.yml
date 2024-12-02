@@ -5,7 +5,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/usr/app
-    command: ["./entrypoint_api.sh"]
     ports:
       - "8000:8000"
     environment:

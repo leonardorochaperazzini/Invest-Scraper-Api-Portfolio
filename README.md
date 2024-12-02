@@ -9,11 +9,6 @@ To start the project, follow the commands below:
 
 ### Docker Commands
 
-- **Build the application as worker standalone:**
-  ```bash
-  docker-compose -f docker-compose-app-worker.yml -p app1 build
-  ```
-
   - **Build the application as api:**
   ```bash
   docker-compose -f docker-compose-api.yml -p app1 build
@@ -27,11 +22,6 @@ To start the project, follow the commands below:
 - **Run the database service:**
   ```bash
   docker-compose -f docker-compose-db.yml -p db-1 up
-  ```
-
-- **Run the application as worker standalone:**
-  ```bash
-  docker-compose -f docker-compose-app-worker.yml -p app1 up
   ```
 
 - **Run the application as api:**
