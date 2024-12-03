@@ -1,3 +1,2 @@
-Deploy CI/CD
 Create auth 
 Create automate tests

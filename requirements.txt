@@ -7,5 +7,6 @@ retry
 sqlalchemy
 psycopg2-binary
 pydantic
+starlette
 selenium
 uvicorn
