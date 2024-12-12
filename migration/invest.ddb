@@ -1,7 +1,7 @@
 {
   "author": "Unnamed",
   "title": "Untitled Diagram",
-  "date": "2024-11-25T12:16:20.350Z",
+  "date": "2024-12-09T11:40:45.737Z",
   "tables": [
     {
       "id": 0,
@@ -306,6 +306,113 @@
       "indices": [],
       "color": "#175e7a",
       "key": 1732535734461
+    },
+    {
+      "id": 5,
+      "name": "users",
+      "x": -609.6102949183402,
+      "y": 508.47846697723355,
+      "fields": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": true,
+          "notNull": true,
+          "increment": true,
+          "comment": "",
+          "id": 0
+        },
+        {
+          "name": "username",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": true,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "id": 1,
+          "size": 255
+        },
+        {
+          "name": "full_name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "id": 2,
+          "size": 255
+        },
+        {
+          "name": "hashed_password",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "id": 3,
+          "size": 255
+        },
+        {
+          "name": "disabled",
+          "type": "BOOLEAN",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "id": 4,
+          "size": "",
+          "values": []
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": false,
+          "increment": false,
+          "comment": "",
+          "id": 5,
+          "size": 255
+        }
+      ],
+      "comment": "",
+      "indices": [
+        {
+          "id": 0,
+          "name": "users_index_0",
+          "unique": false,
+          "fields": [
+            "username"
+          ]
+        },
+        {
+          "id": 1,
+          "name": "users_index_1",
+          "unique": false,
+          "fields": [
+            "email"
+          ]
+        }
+      ],
+      "color": "#175e7a",
+      "key": 1733744307242
     }
   ],
   "relationships": [

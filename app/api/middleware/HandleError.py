@@ -7,6 +7,7 @@ class HandleError(BaseHTTPMiddleware):
         try:
             return await call_next(request)
         except Exception as e:
+            print(e)
             # Log the error here
             return JSONResponse(
                 status_code=500,

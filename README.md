@@ -9,22 +9,22 @@ To start the project, follow the commands below:
 
 ### Docker Commands
 
-  - **Build the application as api:**
+  - **Build application as api:**
   ```bash
   docker-compose -f docker-compose-api.yml -p app1 build
   ```
 
-- **Run the Selenium service:**
+- **Run Selenium service:**
   ```bash
   docker-compose -f docker-compose-selenium-server.yml up
   ```
 
-- **Run the database service:**
+- **Run database service:**
   ```bash
   docker-compose -f docker-compose-db.yml -p db-1 up
   ```
 
-- **Run the application as api:**
+- **Run application as api:**
   ```bash
   docker-compose -f docker-compose-api.yml -p app1 up
   ```
@@ -32,3 +32,14 @@ To start the project, follow the commands below:
 ## Data Model
 
 The data model is located at `./migration/invest.ddb` and was created using the website [https://www.drawdb.app/](https://www.drawdb.app/).
+
+## PROD
+
+# Api
+
+Powered by Render (https://render.com)
+
+# Database 
+
+Powered by Neon postgres (https://neon.tech)
+

@@ -14,7 +14,8 @@ from service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 class GenericScraper:
     def __init__(self) -> None:
         self.url = "https://statusinvest.com.br/"
-        options = webdriver.FirefoxOptions()
+        options = webdriver.ChromeOptions()
+
         options.add_argument(f"user-agent={FakeUserAgentService().get_random_user_agent()}")
 
         self.driver = webdriver.Remote(

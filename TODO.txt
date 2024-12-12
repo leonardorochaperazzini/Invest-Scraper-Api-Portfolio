@@ -1,2 +1,1 @@
-Create auth 
 Create automate tests

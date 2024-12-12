@@ -1,4 +1,4 @@
-"""scraper tickers data
+"""create table scraper tickers data
 
 Revision ID: 5fd6c7bee617
 Revises: 62a9e41c6008
