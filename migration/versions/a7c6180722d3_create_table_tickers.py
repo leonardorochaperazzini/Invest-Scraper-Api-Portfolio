@@ -38,6 +38,7 @@ def upgrade() -> None:
         INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('HGLG11', 2);
         INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('VISC11', 2);
         INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('FIIB11', 2);
+        INSERT INTO invest."tickers" ("name", "ticker_type_id") VALUES ('BTHF11', 2);
     ''')
 
 def downgrade() -> None:

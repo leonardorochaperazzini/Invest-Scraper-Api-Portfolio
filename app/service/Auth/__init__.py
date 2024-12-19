@@ -8,14 +8,14 @@ from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
-from contract.repository.Base import Base as BaseRepositoryInterface
+from app.contract.repository.Base import Base as BaseRepositoryInterface
 
-from model.User import User as UserModelDB
+from app.model.User import User as UserModelDB
 
-from repository.User import User as UserRepository
+from app.repository.User import User as UserRepository
 
-from service.Auth.model.TokenData import TokenData
-from service.Auth.model.User import User as UserModel
+from app.service.Auth.model.TokenData import TokenData
+from app.service.Auth.model.User import User as UserModel
 
 SECRET_KEY = os.getenv("AUTH_SECRET_KEY")
 ALGORITHM = "HS256"

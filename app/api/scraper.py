@@ -2,21 +2,21 @@ import concurrent.futures
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from api.rule.Scraper import RunScraper
+from app.api.rule.Scraper import RunScraper
 
-from model.Ticker import Ticker as TickerModel
-from model.ScraperRun import ScraperRun as ScraperRunModel
-from model.ScraperRunTicker import ScraperRunTicker as ScraperRunTickerModel
-from model.ScraperTickerData import ScraperTickerData as ScraperTickerDataModel
+from app.model.Ticker import Ticker as TickerModel
+from app.model.ScraperRun import ScraperRun as ScraperRunModel
+from app.model.ScraperRunTicker import ScraperRunTicker as ScraperRunTickerModel
+from app.model.ScraperTickerData import ScraperTickerData as ScraperTickerDataModel
 
-from repository.Ticker import Ticker as TickerRepository
-from repository.ScraperRun import ScraperRun as ScraperRunRepository
-from repository.ScraperRunTicker import ScraperRunTicker as ScraperRunTickerRepository
-from repository.ScraperTickerData import ScraperTickerData as ScraperTickerDataRepository
+from app.repository.Ticker import Ticker as TickerRepository
+from app.repository.ScraperRun import ScraperRun as ScraperRunRepository
+from app.repository.ScraperRunTicker import ScraperRunTicker as ScraperRunTickerRepository
+from app.repository.ScraperTickerData import ScraperTickerData as ScraperTickerDataRepository
 
-from service.Auth import get_current_active_user
-from service.Auth.model.User import User as UserModel
-from service.ScraperRun import ScraperRun as ScraperRunService
+from app.service.Auth import get_current_active_user
+from app.service.Auth.model.User import User as UserModel
+from app.service.ScraperRun import ScraperRun as ScraperRunService
 
 
 router = APIRouter()
@@ -51,6 +51,8 @@ def run_scraper(current_user: Annotated[UserModel, Depends(get_current_active_us
         }
     )
 
+    scraper_drive_is_accessible = True
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         for ticker in tickers:
             invest_service = ScraperRunService(
@@ -58,13 +60,17 @@ def run_scraper(current_user: Annotated[UserModel, Depends(get_current_active_us
                 scraper_run_ticker_repository = ScraperRunTickerRepository(ScraperRunTickerModel),
                 scraper_ticker_data_repository =  ScraperTickerDataRepository(ScraperTickerDataModel)
             )
-            future_ticker = executor.submit(invest_service.scraper_ticker_info, scraper_run.id, ticker)
-
-            def callback(future):
-                ticker_info, additional_data = future.result()
-                invest_service.save_ticker_info(ticker_info, additional_data)
             
-            future_ticker.add_done_callback(callback)
+            scraper_drive_is_accessible = invest_service.check_if_driver_is_accessible()
+
+            if scraper_drive_is_accessible:
+                future_ticker = executor.submit(invest_service.scraper_ticker_info, scraper_run.id, ticker)
+
+                def callback(future):
+                    scraper_run_ticker_id, ticker_info = future.result()
+                    invest_service.save_ticker_info(scraper_run_ticker_id, ticker_info)
+                
+                future_ticker.add_done_callback(callback)
 
     scraper_run = scraper_run_repository.update(
         scraper_run.id,
@@ -73,4 +79,12 @@ def run_scraper(current_user: Annotated[UserModel, Depends(get_current_active_us
         }
     )
 
-    return {"scraper_run": scraper_run.to_dict()}
+    if scraper_drive_is_accessible:
+        return {"scraper_run": scraper_run.to_dict()}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Scraper remote driver failed to connect"
+        )
+
+    

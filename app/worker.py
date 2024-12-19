@@ -1,4 +1,4 @@
-from service.Invest import run_invest_scraping_and_save_data
+from app.service.ScraperRun import run_invest_scraping_and_save_data
 
 MAX_WORKERS = 1
 

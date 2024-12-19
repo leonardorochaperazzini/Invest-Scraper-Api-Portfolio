@@ -1,15 +1,14 @@
 import os
 
-from service.Logger import LoggerSingleton as logger_singleton
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from service.Scraper.model.TickerInfo import TickerInfo
-from service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
+from app.service.Scraper.model.TickerInfo import TickerInfo
+from app.service.Logger import LoggerSingleton as logger_singleton
+from app.service.FakeUserAgent import FakeUserAgent as FakeUserAgentService
 
 class GenericScraper:
     def __init__(self) -> None:
@@ -18,11 +17,18 @@ class GenericScraper:
 
         options.add_argument(f"user-agent={FakeUserAgentService().get_random_user_agent()}")
 
-        self.driver = webdriver.Remote(
-            command_executor=os.getenv('SELENIUM_HUB_URL', 'http://selenium-hub:4444'),
-            options=options
-        )
+        try: 
+            self.driver = webdriver.Remote(
+                command_executor=os.getenv('SELENIUM_HUB_URL', 'http://selenium-hub:4444'),
+                options=options
+            )
+            self.driver_is_running = True
+        except Exception as e:
+            self.driver_is_running = False
 
+    def check_driver_is_running(self):
+        return self.driver_is_running
+    
     def __close_ads(self):
         try:
             iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
@@ -51,4 +57,6 @@ class GenericScraper:
         return self.get_data_from_ticker(ticker)
 
     def __del__(self):
-        self.driver.quit()
+        if self.driver_is_running:
+            self.driver_is_running = False
+            self.driver.quit()

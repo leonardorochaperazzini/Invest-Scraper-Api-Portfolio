@@ -1,0 +1,87 @@
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/app
+    environment:
+      - AUTH_SECRET_KEY=a874c3c88f0021451e195c991ba15d55cce127bd5b1d13b20e6d85692310848e
+      - ENV=TEST
+      - DATABASE_HOST=db_test
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=invest_test
+      - PRINT_LOG=False
+      - PYTHONUNBUFFERED=1
+      - SELENIUM_HUB_URL=http://host.docker.internal:4444
+      - SELENIUM_HUB_TIMEOUT=300
+    depends_on:
+      - db_test
+      - chromium
+      - selenium-hub
+    networks:
+      - my_shared_network
+
+  db_test:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: invest_test
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    depends_on:
+      - selenium-hub
+      - chromium
+    networks:
+      - my_shared_network
+
+  chromium:
+    image: seleniarm/node-chromium:latest
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=300
+      - SE_VNC_PASSWORD=123456
+      - SE_NODE_MAX_SESSIONS=5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4442"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    networks:
+      - my_shared_network
+
+  selenium-hub:
+    image: seleniarm/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    networks:
+      - my_shared_network
+  
+networks:
+  my_shared_network:
+    driver: bridge
+
+volumes:
+  pgdata_test:

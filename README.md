@@ -9,24 +9,14 @@ To start the project, follow the commands below:
 
 ### Docker Commands
 
-  - **Build application as api:**
+- **Run test applications:**
   ```bash
-  docker-compose -f docker-compose-api.yml -p app1 build
+  docker-compose -f docker-compose-test.yml up --abort-on-container-exit
   ```
 
-- **Run Selenium service:**
+- **Run application:**
   ```bash
-  docker-compose -f docker-compose-selenium-server.yml up
-  ```
-
-- **Run database service:**
-  ```bash
-  docker-compose -f docker-compose-db.yml -p db-1 up
-  ```
-
-- **Run application as api:**
-  ```bash
-  docker-compose -f docker-compose-api.yml -p app1 up
+  docker-compose -f docker-compose.yml up 
   ```
 
 ## Data Model
@@ -37,7 +27,7 @@ The data model is located at `./migration/invest.ddb` and was created using the 
 
 # Api
 
-Powered by Render (https://render.com)
+https://invest-scraper-api.onrender.com - Powered by Render (https://render.com)
 
 # Database 
 

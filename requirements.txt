@@ -2,11 +2,14 @@ alembic
 bs4
 faker
 fastapi
+httpx
 requests
 retry
 sqlalchemy
 passlib[bcrypt]
 bcrypt==4.0.1
+pytest
+pytest-cov
 python-multipart
 psycopg2-binary
 pydantic
