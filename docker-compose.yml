@@ -8,16 +8,16 @@ services:
     volumes:
       - .:/usr/app
     environment:
-      - AUTH_SECRET_KEY=a874c3c88f0021451e195c991ba15d55cce127bd5b1d13b20e6d85692310848e
-      - ENV=DEV
-      - DATABASE_HOST=db
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
-      - DATABASE_NAME=invest
-      - PRINT_LOG=False
-      - PYTHONUNBUFFERED=1
-      - SELENIUM_HUB_URL=http://host.docker.internal:4444
-      - SELENIUM_HUB_TIMEOUT=300
+      - AUTH_SECRET_KEY=${AUTH_SECRET_KEY}
+      - ENV=${ENV}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - PRINT_LOG=${PRINT_LOG}
+      - PYTHONUNBUFFERED=${PYTHONUNBUFFERED}
+      - SELENIUM_HUB_URL=${SELENIUM_HUB_URL}
+      - SELENIUM_HUB_TIMEOUT=${SELENIUM_HUB_TIMEOUT}
     depends_on:
       - db
       - chromium
@@ -32,7 +32,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: invest
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - invest-pg-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -86,4 +86,5 @@ networks:
     driver: bridge
 
 volumes:
-  pgdata:
+  invest-pg-data:
+    external: true

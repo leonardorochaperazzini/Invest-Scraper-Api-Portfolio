@@ -19,6 +19,8 @@ To start the project, follow the commands below:
   docker-compose -f docker-compose.yml up 
   ```
 
+  To enter on api docs access http://localhost:8000/docs
+
 ## Data Model
 
 The data model is located at `./migration/invest.ddb` and was created using the website [https://www.drawdb.app/](https://www.drawdb.app/).
